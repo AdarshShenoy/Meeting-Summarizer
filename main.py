@@ -1,3 +1,4 @@
+#Setup Fastapi server to accept POST request for uploading a file
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from summarize import summarize  
@@ -27,10 +28,8 @@ async def upload_file(file: UploadFile = File(...)):
     if file.content_type != 'text/plain':
         raise HTTPException(status_code=400, detail='Only text files are allowed.')
 
-    print('Here')
 
     text = file.file.read().decode('utf-8')
     summarized_text = summarize(text)
-    print(summarized_text)
 
     return {"filename": file.filename, "summarized_text": summarized_text}
